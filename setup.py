@@ -1,3 +1,7 @@
+"""
+if you run "pip install .", this will be used to install this repo
+"""
+
 from setuptools import setup, find_packages
 
 setup(
