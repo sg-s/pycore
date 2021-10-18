@@ -11,6 +11,42 @@ import os
 import matplotlib.transforms as mtransforms
 
 
+def methods(thing, spacing=20):
+    """show methods of object.
+
+    Args:
+        thing (some object): any object
+
+    Ignores attributes starting with "__"
+
+    modified from: https://stackoverflow.com/questions/34439/finding-what-methods-a-python-object-has
+
+    """
+
+    processFunc = (lambda s: ' '.join(s.split())) or (lambda s: s)
+    methodList = []
+    for method_name in dir(thing):
+        try:
+            if callable(getattr(thing, method_name)):
+                methodList.append(str(method_name))
+        except:
+            methodList.append(str(method_name))
+
+    for method in methodList:
+
+        if method.startswith("__"):
+            continue
+
+        try:
+            print(
+                str(method.ljust(spacing))
+                + ' '
+                + processFunc(str(getattr(thing, method).__doc__)[0:90])
+            )
+        except:
+            print(method.ljust(spacing) + ' ' + ' getattr() failed')
+
+
 def labelled_subplots(mosaic, label=True, **optionals):
     """wrapper to subplot_mosaic that makes subplots
 
