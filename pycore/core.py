@@ -11,7 +11,37 @@ import os
 import matplotlib.transforms as mtransforms
 
 
-def methods(thing, spacing=20):
+def methods_and_properties(thing, ignore_internal=True):
+    """returns methods and properties of an object
+
+    Args:
+        thing (object): some object
+
+    Returns:
+        methods: list of method names
+        properties: list of property names
+
+    """
+
+    method_list = []
+    prop_list = []
+    for attr_name in dir(thing):
+
+        if attr_name.startswith("_") and ignore_internal:
+            continue
+
+        try:
+            if callable(getattr(thing, attr_name)):
+                method_list.append(str(attr_name))
+            else:
+                prop_list.append(str(attr_name))
+        except:
+            pass
+
+    return method_list, prop_list
+
+
+def methods(thing, spacing=20, ignore_internal=True):
     """show methods of object.
 
     Args:
@@ -23,25 +53,40 @@ def methods(thing, spacing=20):
 
     """
 
-    processFunc = (lambda s: ' '.join(s.split())) or (lambda s: s)
-    methodList = []
-    for method_name in dir(thing):
-        try:
-            if callable(getattr(thing, method_name)):
-                methodList.append(str(method_name))
-        except:
-            methodList.append(str(method_name))
+    method_list, _ = methods_and_properties(thing, ignore_internal=ignore_internal)
 
-    for method in methodList:
+    process_func = (lambda s: ' '.join(s.split())) or (lambda s: s)
 
-        if method.startswith("__"):
-            continue
+    for method in method_list:
 
         try:
             print(
                 str(method.ljust(spacing))
                 + ' '
-                + processFunc(str(getattr(thing, method).__doc__)[0:90])
+                + process_func(str(getattr(thing, method).__doc__)[0:90])
+            )
+        except:
+            print(method.ljust(spacing) + ' ' + ' getattr() failed')
+
+
+def properties(thing, ignore_internal=True, spacing=20):
+    """show properties of object
+
+    Args:
+        thing (TYPE): object
+        ignore_internal (True, optional): should we ignore attrs that start with _?
+    """
+    _, prop_list = methods_and_properties(thing, ignore_internal=ignore_internal)
+
+    process_func = (lambda s: ' '.join(s.split())) or (lambda s: s)
+
+    for method in prop_list:
+
+        try:
+            print(
+                str(method.ljust(spacing))
+                + ' '
+                + process_func(str(getattr(thing, method).__doc__)[0:90])
             )
         except:
             print(method.ljust(spacing) + ' ' + ' getattr() failed')
