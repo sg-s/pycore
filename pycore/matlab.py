@@ -8,6 +8,7 @@ import numpy as np
 import inspect
 import os
 
+from pycore.core import *
 
 import multiprocessing
 

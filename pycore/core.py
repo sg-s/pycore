@@ -3,10 +3,39 @@ This module contains core functionality that is present in MATLAB
 but isn't in python, so acts as a shorthand for commonly used functions
 and types 
 """
-import matplotlib.pyplot as plt
-import numpy as np
+import hashlib
 import inspect
 import os
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def hash_dict(dictionary):
+    """
+    hashes a dictionary, by directly hashing values
+    numpy.ndarrays are converted to bytes and then hashed
+    all hashes are combined to return a single hash
+
+    Args:
+        dictionary (dict): some dictionary with string keys
+
+    Returns:
+        hash: hex-encoded string
+    """
+    check_type(dictionary, dict)
+    keys = dictionary.keys()
+
+    keys = dictionary.keys()
+    hashes = []
+    for key in keys:
+        temp = vars[key]
+        if isinstance(temp, np.ndarray):
+            hashes.append(hex(hash(a.data.tobytes())))
+        else:
+            hashes.append(hash(vars[key]))
+
+    return hex(hash(tuple(hashes)))
 
 
 def check_all_arrays_same_shape(arrays):
@@ -15,7 +44,7 @@ def check_all_arrays_same_shape(arrays):
     Args:
         arrays (tuple): tuple of np.ndarrays
 
-    Returns:
+    No Longer Returned:
         nothing
     """
     for i in range(len(arrays)):
@@ -28,6 +57,7 @@ def check_element_type(things, typename):
 
     Args:
         things (np.ndarray): array that should contain typename
+        typename (TYPE): Description
     """
 
     check_type(things, np.ndarray)
@@ -41,7 +71,7 @@ def check_vector(thing):
     Args:
         thing (anything): any thing
 
-    Returns:
+    No Longer Returned:
         nothing
     """
 
@@ -57,6 +87,9 @@ def dict_to_array(d):
 
     Args:
         d (dictionary): some dictionary
+
+    Returns:
+        TYPE: Description
     """
 
     temp = np.array(list(d.items()))
@@ -92,9 +125,9 @@ def check_type(thing, typename):
     checks if thing is of type typename, if not, throws an error
 
     Arguments:
-    ----------
-    thing: any object
-    typename: valid python type of type type
+        thing: any object
+        typename: valid python type of type type
+        ----------
     """
 
     assert isinstance(thing, typename), (
