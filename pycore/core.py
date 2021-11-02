@@ -31,9 +31,11 @@ def hash_dict(dictionary):
     for key in keys:
         temp = dictionary[key]
         if isinstance(temp, np.ndarray):
-            hashes.append(hex(hash(temp.data.tobytes())))
+            hashes.append(hash(temp.data.tobytes()))
+        elif isinstance(temp, list):
+            hashes.append(hash(tuple(temp)))
         else:
-            hashes.append(hash(dictionary[key]))
+            hashes.append(hash(temp))
 
     return hex(hash(tuple(hashes)))
 
