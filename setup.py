@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pycore',
-    version='21.11.2',
+    version='21.11.3',
     packages=find_packages(exclude=('tests', 'docs')),
     description='Useful python functions and tools',
     url='URL',

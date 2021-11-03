@@ -25,19 +25,21 @@ def hash_dict(dictionary):
     """
     check_type(dictionary, dict)
     keys = dictionary.keys()
+    m = hashlib.md5()
 
-    keys = dictionary.keys()
-    hashes = []
     for key in keys:
         temp = dictionary[key]
-        if isinstance(temp, np.ndarray):
-            hashes.append(hash(temp.data.tobytes()))
-        elif isinstance(temp, list):
-            hashes.append(hash(tuple(temp)))
-        else:
-            hashes.append(hash(temp))
 
-    return hex(hash(tuple(hashes)))
+        if isinstance(temp, list):
+            t = tuple(temp)
+            for thing in t:
+                m.update(thing.encode())
+        elif isinstance(temp, np.ndarray):
+            m.update(temp)
+        else:
+            m.update(temp.to_bytes(8, 'big'))
+
+    return m.hexdigest()
 
 
 def check_all_arrays_same_shape(arrays):
