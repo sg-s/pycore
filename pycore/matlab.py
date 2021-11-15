@@ -3,18 +3,53 @@ This module contains functions that mimic some of MATLAB's builtins
 for easier transition to python land
 """
 
+import inspect
+import multiprocessing
+import os
+
 import matplotlib.pyplot as plt
 import numpy as np
-import inspect
-import os
 
 from pycore.core import *
 
-import multiprocessing
+
+def first_nonzero(arr, axis=0, invalid_val=-1):
+    """
+    find the index of the first non-zero element in an array
+
+    Args:
+        arr (np.array): some array
+        axis (TYPE): axis to operate on
+        invalid_val (-1): if there are no nonzero values, then use this to indicate
+
+    Returns:
+        array of integers of positions in array
+    """
+
+    mask = arr != 0
+    return np.where(mask.any(axis=axis), mask.argmax(axis=axis), invalid_val)
+
+
+def last_nonzero(arr, axis=0, invalid_val=-1):
+    """
+    find the index of the last non-zero element in an array
+
+    Args:
+        arr (np.array): some array
+        axis (TYPE): axis to operate on
+        invalid_val (-1): if there are no nonzero values, then use this to indicate
+
+    Returns:
+        array of integers of positions in array
+    """
+    mask = arr != 0
+    val = arr.shape[axis] - np.flip(mask, axis=axis).argmax(axis=axis) - 1
+    return np.where(mask.any(axis=axis), val, invalid_val)
 
 
 def parfor(func, args, operate_on_columns=True):
-    """auto parallelization of numpy arrays
+    """
+    auto parallelization of numpy arrays
 
     Automatically apply function to columns/rows
     of numpy array using multiprocessing.Pool

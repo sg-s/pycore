@@ -3,12 +3,34 @@ This module contains helper graphics functions for making figures, subplots
 and modifying plots
 """
 
-import matplotlib.pyplot as plt
-import numpy as np
 import inspect
 import os
 
+import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
+import numpy as np
+from matplotlib import cm
+
+
+def reorder_colormap(cmap="plasma", reorder_by=None):
+    """
+    reorder a colormap by some vector
+
+    Args:
+        cmap (str, optional): name of built-in colormap
+        reorder_by (np.array): some vector
+
+    Returns:
+        TYPE: sorted colormap
+    """
+    cmap = cm.get_cmap(cmap)
+
+    order = np.argsort(reorder_by)
+
+    ranks = order.argsort()
+    N = len(reorder_by)
+    colors = [cmap(r / N) for r in ranks]
+    return colors
 
 
 def labelled_subplots(mosaic, label=True, **optionals):
