@@ -5,4 +5,5 @@ should be in the main namespace.
 
 from .core import *
 from .graphics import *
+from .math import *
 from .matlab import *
