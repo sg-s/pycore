@@ -7,16 +7,18 @@ import inspect
 import os
 import typing
 
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
 import numpy as np
 import scipy.stats
 from matplotlib import cm
-
 from pycore.core import *
 
 
-def plot_pairwise(x: np.ndarray, y: np.ndarray, ax=None) -> None:
+def plot_pairwise(
+    x: np.ndarray, y: np.ndarray, ax=None, color=None, label=None
+) -> None:
     """makes a pairwise scatter plot
 
     Args:
@@ -35,18 +37,21 @@ def plot_pairwise(x: np.ndarray, y: np.ndarray, ax=None) -> None:
     M = np.nanmax(np.concatenate((x, y)))
 
     plt.sca(ax)
-    plt.xlim(m, M)
-    plt.ylim(m, M)
-
     plt.plot([m, M], [m, M], "k:")
 
-    plt.gca().set_aspect("equal", adjustable="box")
-    h = plt.scatter(x, y)
+    ax.set_aspect("equal", adjustable="box")
+    if color is None:
+        h = plt.scatter(x, y)
+    else:
+        h = plt.scatter(x, y, color=color)
 
     # t-test
     t, p = scipy.stats.ttest_rel(x, y, nan_policy="omit")
     p = format_p_value(p)
-    h.set_label(p)
+    if label is None:
+        h.set_label(p)
+    else:
+        h.set_label(label + " " + p)
     plt.legend()
 
 
@@ -136,5 +141,15 @@ def check_axis(axis):
     if axis is None:
         _, axis = plt.subplots()
 
-    plt.sca(axis)
+    if isinstance(axis, np.ndarray):
+        # probably fine, hope for the best
+        try:
+            plt.sca(axis[0])
+        except:
+            _, axis = plt.subplots()
+            plt.sca(axis)
+
+    else:
+        plt.sca(axis)
+
     return axis
