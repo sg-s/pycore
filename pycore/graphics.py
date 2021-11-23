@@ -5,11 +5,49 @@ and modifying plots
 
 import inspect
 import os
+import typing
 
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
 import numpy as np
+import scipy.stats
 from matplotlib import cm
+
+from pycore.core import *
+
+
+def plot_pairwise(x: np.ndarray, y: np.ndarray, ax=None) -> None:
+    """makes a pairwise scatter plot
+
+    Args:
+        x (numpy vector): some vector
+        y (numpy vector): some other vector
+        ax (None, optional): Description
+    """
+    ax = check_axis(ax)
+
+    check_vector(x)
+    check_vector(y)
+
+    check_all_arrays_same_shape((x, y))
+
+    m = np.nanmin(np.concatenate((x, y)))
+    M = np.nanmax(np.concatenate((x, y)))
+
+    plt.sca(ax)
+    plt.xlim(m, M)
+    plt.ylim(m, M)
+
+    plt.plot([m, M], [m, M], "k:")
+
+    plt.gca().set_aspect("equal", adjustable="box")
+    h = plt.scatter(x, y)
+
+    # t-test
+    t, p = scipy.stats.ttest_rel(x, y, nan_policy="omit")
+    p = format_p_value(p)
+    h.set_label(p)
+    plt.legend()
 
 
 def reorder_colormap(cmap="plasma", reorder_by=None):
@@ -44,7 +82,7 @@ def labelled_subplots(mosaic, label=True, **optionals):
         fig: handle to figure
         axes: numpy array of axes
     """
-    plt.close('all')
+    plt.close("all")
     fig, axes = plt.subplot_mosaic(mosaic, constrained_layout=True, **optionals)
     if label:
         label_axes(fig, axes)
@@ -74,15 +112,15 @@ def label_axes(fig, axs, fontsize=15):
             label,
             transform=ax.transAxes + trans,
             fontsize=fontsize,
-            va='bottom',
-            fontfamily='sans-serif',
-            fontweight='bold',
+            va="bottom",
+            fontfamily="sans-serif",
+            fontweight="bold",
         )
 
 
 def check_axis(axis):
 
-    '''
+    """
     Utility function that generates an axis if needed, and activates it
 
     Parameters:
@@ -93,7 +131,7 @@ def check_axis(axis):
     -----------
     handle to an axis
 
-    '''
+    """
 
     if axis is None:
         _, axis = plt.subplots()

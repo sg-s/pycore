@@ -11,6 +11,29 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+def format_p_value(pvalue: float) -> str:
+    """
+    pretty formats a given p-value
+
+    if your p-values are very small, follows
+    good statistical practice and reports it
+    as < .01 instead of some meaningless ~0
+    value
+
+    Args:
+        pvalue (float): p-value
+
+    Returns:
+        str: nicely formatted string
+    """
+    if pvalue < 0.01:
+        txt = "p < .01 "
+    else:
+        txt = "p = " + "{:.2f}".format(pvalue)
+
+    return txt
+
+
 def hash_dict(dictionary):
     """
     hashes a dictionary, by directly hashing values
@@ -37,7 +60,7 @@ def hash_dict(dictionary):
         elif isinstance(temp, np.ndarray):
             m.update(temp)
         else:
-            m.update(temp.to_bytes(8, 'big'))
+            m.update(temp.to_bytes(8, "big"))
 
     return m.hexdigest()
 
@@ -108,13 +131,13 @@ def check_first_dimension_size(things):
         things (tuple): tuple of anything
     """
 
-    if hasattr(things[0], 'shape'):
+    if hasattr(things[0], "shape"):
         first_dim_size = things[0].shape[0]
     else:
         first_dim_size = len(things[0])
 
     for thing in things:
-        if hasattr(thing, 'shape'):
+        if hasattr(thing, "shape"):
             this_size = thing.shape[0]
         else:
             this_size = len(thing)
