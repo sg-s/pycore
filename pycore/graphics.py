@@ -16,6 +16,33 @@ from matplotlib import cm
 from pycore.core import *
 
 
+def subsample(x: np.ndarray, bin_size=50) -> np.ndarray:
+    """
+    min-max resampler to make plots smaller
+    and to prevent the heat death of your graphics card
+
+    this destroys and alters data, and should only be used
+    for plots!
+
+    Args:
+        x (TYPE): Description
+        bin_size (int, optional): Description
+    """
+    z = np.floor(x.shape[0] / bin_size).astype(int) * bin_size
+    xx = x[0:z]
+    nbins = int(len(xx) / bin_size)
+
+    xx = np.reshape(xx, (nbins, bin_size))
+    tops = xx.max(axis=1)
+    bottoms = xx.min(axis=1)
+
+    reduced_x = np.zeros(tops.shape[0] * 2)
+    reduced_x[1::2] = tops
+    reduced_x[0::2] = bottoms
+
+    return reduced_x
+
+
 def plot_pairwise(
     x: np.ndarray, y: np.ndarray, ax=None, color=None, label=None
 ) -> None:
