@@ -34,6 +34,32 @@ def format_p_value(pvalue: float) -> str:
     return txt
 
 
+def md5hash(obj):
+    """
+    hash almost anything
+
+    Args:
+        thing (TYPE): Description
+    """
+
+    m = hashlib.md5()
+    if obj is None:
+        return "none"
+    if isinstance(obj, list):
+        t = tuple(obj)
+        list_m = ""
+        for thing in t:
+            list_m += md5hash(thing)
+        m.update(list_m.encode())
+    elif isinstance(obj, np.ndarray):
+        m.update(obj)
+    elif isinstance(obj, str):
+        m.update(obj.encode())
+    else:
+        m.update(obj.to_bytes(8, "big"))
+    return m.hexdigest()
+
+
 def hash_dict(dictionary):
     """
     hashes a dictionary, by directly hashing values

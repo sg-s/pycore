@@ -13,6 +13,7 @@ import matplotlib.transforms as mtransforms
 import numpy as np
 import scipy.stats
 from matplotlib import cm
+
 from pycore.core import *
 
 
@@ -25,9 +26,12 @@ def subsample(x: np.ndarray, bin_size=50) -> np.ndarray:
     for plots!
 
     Args:
-        x (TYPE): Description
-        bin_size (int, optional): Description
+        x: a vector
+        bin_size: max and min will be computer on this bin size (default 50)
     """
+
+    check_vector(x)
+
     z = np.floor(x.shape[0] / bin_size).astype(int) * bin_size
     xx = x[0:z]
     nbins = int(len(xx) / bin_size)
@@ -96,10 +100,10 @@ def reorder_colormap(cmap="plasma", reorder_by=None):
     cmap = cm.get_cmap(cmap)
 
     order = np.argsort(reorder_by)
-
     ranks = order.argsort()
     N = len(reorder_by)
     colors = [cmap(r / N) for r in ranks]
+
     return colors
 
 
