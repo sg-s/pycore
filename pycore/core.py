@@ -43,9 +43,16 @@ def md5hash(obj):
     """
 
     m = hashlib.md5()
+
     if obj is None:
         return "none"
-    if isinstance(obj, list):
+
+    elif isinstance(obj, float):
+        # hashing floats is basically impossible in python,
+        # see: https://stackoverflow.com/questions/58212573/how-to-use-hashlib-to-md5-hash-a-number
+        # so we're going to use a dirty hack to cast into a string
+        m.update(str(obj).encode())
+    elif isinstance(obj, list):
         t = tuple(obj)
         list_m = ""
         for thing in t:

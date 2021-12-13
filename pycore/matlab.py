@@ -128,7 +128,7 @@ def _methods_and_properties(thing, ignore_internal=True):
     return method_list, prop_list
 
 
-def methods(thing, spacing=20, ignore_internal=True):
+def methods(thing, spacing=None, ignore_internal=True):
     """show methods of object.
 
     Args:
@@ -142,18 +142,21 @@ def methods(thing, spacing=20, ignore_internal=True):
 
     method_list, _ = _methods_and_properties(thing, ignore_internal=ignore_internal)
 
-    process_func = (lambda s: ' '.join(s.split())) or (lambda s: s)
+    process_func = (lambda s: " ".join(s.split())) or (lambda s: s)
+
+    if spacing is None:
+        spacing = 3 + max([len(method) for method in method_list])
 
     for method in method_list:
 
         try:
             print(
                 str(method.ljust(spacing))
-                + ' '
+                + " "
                 + process_func(str(getattr(thing, method).__doc__)[0:90])
             )
         except:
-            print(method.ljust(spacing) + ' ' + ' getattr() failed')
+            print(method.ljust(spacing) + " " + " getattr() failed")
 
 
 def properties(thing, ignore_internal=True, spacing=20):
@@ -165,18 +168,18 @@ def properties(thing, ignore_internal=True, spacing=20):
     """
     _, prop_list = _methods_and_properties(thing, ignore_internal=ignore_internal)
 
-    process_func = (lambda s: ' '.join(s.split())) or (lambda s: s)
+    process_func = (lambda s: " ".join(s.split())) or (lambda s: s)
 
     for method in prop_list:
 
         try:
             print(
                 str(method.ljust(spacing))
-                + ' '
+                + " "
                 + process_func(str(getattr(thing, method).__doc__)[0:90])
             )
         except:
-            print(method.ljust(spacing) + ' ' + ' getattr() failed')
+            print(method.ljust(spacing) + " " + " getattr() failed")
 
 
 def imshow(X, axis=None):
@@ -203,7 +206,7 @@ def imshow(X, axis=None):
         return_axis = True
 
     axis = check_axis(axis)
-    axis.imshow(X, aspect='auto')
+    axis.imshow(X, aspect="auto")
 
     image_handle = axis.get_images()
 
@@ -213,7 +216,7 @@ def imshow(X, axis=None):
         return image_handle
 
 
-def Vector(N, dtype='float64', fill=None):
+def Vector(N, dtype="float64", fill=None):
     """makes a vector, because this is fraught with danger
 
     Args:
@@ -245,7 +248,7 @@ def StringArray(N, value=""):
         N (integer): length of array
         value (optional): fill array with this value
     """
-    array = np.array([value for _ in range(N)], dtype='<U5')
+    array = np.array([value for _ in range(N)], dtype="<U5")
     return array
 
 
