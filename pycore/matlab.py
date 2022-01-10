@@ -4,15 +4,16 @@ for easier transition to python land
 """
 
 import multiprocessing
+from typing import Callable
 
 import numpy as np
 
 from pycore.core import (
     check_all_arrays_same_shape,
-    check_axis,
     check_first_dimension_size,
     check_type,
 )
+from pycore.graphics import check_axis
 
 
 def first_nonzero(arr, axis=0, invalid_val=-1):
@@ -22,7 +23,8 @@ def first_nonzero(arr, axis=0, invalid_val=-1):
     Args:
         arr (np.array): some array
         axis (TYPE): axis to operate on
-        invalid_val (-1): if there are no nonzero values, then use this to indicate
+        invalid_val (-1): if there are no nonzero values, then use
+        this to indicate
 
     Returns:
         array of integers of positions in array
@@ -39,7 +41,8 @@ def last_nonzero(arr, axis=0, invalid_val=-1):
     Args:
         arr (np.array): some array
         axis (TYPE): axis to operate on
-        invalid_val (-1): if there are no nonzero values, then use this to indicate
+        invalid_val (-1): if there are no nonzero values, then use
+        this to indicate
 
     Returns:
         array of integers of positions in array
@@ -49,7 +52,7 @@ def last_nonzero(arr, axis=0, invalid_val=-1):
     return np.where(mask.any(axis=axis), val, invalid_val)
 
 
-def parfor(func, args, operate_on_columns=True):
+def parfor(func: Callable, args, operate_on_columns: bool = True):
     """
     auto parallelization of numpy arrays
 
@@ -167,7 +170,8 @@ def properties(thing, ignore_internal=True, spacing=20):
 
     Args:
         thing (TYPE): object
-        ignore_internal (True, optional): should we ignore attrs that start with _?
+        ignore_internal (True, optional): should we ignore
+        attrs that start with _?
     """
     _, prop_list = _methods_and_properties(thing, ignore_internal=ignore_internal)
 
@@ -237,36 +241,6 @@ def Vector(N, dtype="float64", fill=None):
         x.fill(np.nan)
 
     return x
-
-
-def StringArray(N, value=""):
-    """make a 1D string array
-
-    I can't see any built-in which makes an array of strings
-    Lists don't work because they don't enforce type and will
-    therefore be inefficient.
-    This is the equivalent of repmat("",N,1) in MATLAB
-
-    Args:
-        N (integer): length of array
-        value (optional): fill array with this value
-    """
-    array = np.array([value for _ in range(N)], dtype="<U5")
-    return array
-
-
-def NaN(dims):
-    """makes a NaN array. like NaN in MATLAB
-
-    Args:
-        dims (TYPE): tuple specifying shape
-
-    Returns:
-        TYPE: array filled with NaNs
-    """
-    array = np.empty(dims)
-    array.fill(np.nan)
-    return array
 
 
 def splitapply(data, groups, func=np.nanmean, flatten=False):
