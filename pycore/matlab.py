@@ -3,14 +3,16 @@ This module contains functions that mimic some of MATLAB's builtins
 for easier transition to python land
 """
 
-import inspect
 import multiprocessing
-import os
 
-import matplotlib.pyplot as plt
 import numpy as np
 
-from pycore.core import *
+from pycore.core import (
+    check_all_arrays_same_shape,
+    check_axis,
+    check_first_dimension_size,
+    check_type,
+)
 
 
 def first_nonzero(arr, axis=0, invalid_val=-1):
@@ -136,7 +138,8 @@ def methods(thing, spacing=None, ignore_internal=True):
 
     Ignores attributes starting with "__"
 
-    modified from: https://stackoverflow.com/questions/34439/finding-what-methods-a-python-object-has
+    modified from: https://stackoverflow.com/questions/34439/
+    finding-what-methods-a-python-object-has
 
     """
 

@@ -8,6 +8,7 @@ import matplotlib.transforms as mtransforms
 import numpy as np
 import scipy.stats
 from matplotlib import cm
+
 from pycore.core import (
     check_all_arrays_same_shape,
     check_vector,

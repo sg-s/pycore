@@ -3,35 +3,23 @@ This module contains core functionality that is present in MATLAB
 but isn't in python, so acts as a shorthand for commonly used functions
 and types 
 """
-import hashlib
-import inspect
-import os
-
-import matplotlib.pyplot as plt
-import numpy as np
 
 
 def format_p_value(pvalue: float) -> str:
     """
-    pretty formats a given p-value
+    utility function to prettify printing of p-values
 
-    if your p-values are very small, follows
-    good statistical practice and reports it
-    as < .01 instead of some meaningless ~0
-    value
 
     Args:
-        pvalue (float): p-value
+        pvalue (float): p-value ∈ [0,1]
 
     Returns:
-        str: nicely formatted string
+        str: "p = .81" or "p < .01"
     """
     if pvalue < 0.01:
-        txt = "p < .01 "
+        return "p < .01"
     else:
-        txt = "p = " + "{:.2f}".format(pvalue)
-
-    return txt
+        return "p = " + "{:.2f}".format(pvalue)
 
 
 def md5hash(obj):
@@ -49,7 +37,8 @@ def md5hash(obj):
 
     elif isinstance(obj, float):
         # hashing floats is basically impossible in python,
-        # see: https://stackoverflow.com/questions/58212573/how-to-use-hashlib-to-md5-hash-a-number
+        # see: https://stackoverflow.com/questions/58212573/
+        # how-to-use-hashlib-to-md5-hash-a-number
         # so we're going to use a dirty hack to cast into a string
         m.update(str(obj).encode())
     elif isinstance(obj, list):

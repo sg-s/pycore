@@ -5,7 +5,6 @@ contains useful maths-related functions
 
 import numpy as np
 import pandas as pd
-import scipy
 import scipy.cluster.hierarchy as sch
 
 
