@@ -3,18 +3,17 @@ This module contains helper graphics functions for making figures, subplots
 and modifying plots
 """
 
-import inspect
-import os
-import typing
-
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
 import numpy as np
 import scipy.stats
 from matplotlib import cm
-
-from pycore.core import *
+from pycore.core import (
+    check_all_arrays_same_shape,
+    check_vector,
+    dict_to_array,
+    format_p_value,
+)
 
 
 def subsample(x: np.ndarray, bin_size=50) -> np.ndarray:
@@ -48,7 +47,7 @@ def subsample(x: np.ndarray, bin_size=50) -> np.ndarray:
 
 
 def plot_pairwise(
-    x: np.ndarray, y: np.ndarray, ax=None, color=None, label=None
+    x: np.ndarray, y: np.ndarray, ax=None, color=None, label=None, size=2
 ) -> None:
     """makes a pairwise scatter plot
 
@@ -72,9 +71,9 @@ def plot_pairwise(
 
     ax.set_aspect("equal", adjustable="box")
     if color is None:
-        h = plt.scatter(x, y)
+        h = plt.scatter(x, y, s=size)
     else:
-        h = plt.scatter(x, y, color=color)
+        h = plt.scatter(x, y, color=color, s=size)
 
     # t-test
     t, p = scipy.stats.ttest_rel(x, y, nan_policy="omit")
