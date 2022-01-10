@@ -3,6 +3,8 @@ This module contains helper graphics functions for making figures, subplots
 and modifying plots
 """
 
+from typing import Optional
+
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
 import numpy as np
@@ -48,14 +50,24 @@ def subsample(x: np.ndarray, bin_size=50) -> np.ndarray:
 
 
 def plot_pairwise(
-    x: np.ndarray, y: np.ndarray, ax=None, color=None, label=None, size=2
+    x: np.ndarray,
+    y: np.ndarray,
+    ax=None,
+    color=None,
+    label: Optional[str] = None,
+    size: int = 2,
+    annotations: Optional[list] = None,
 ) -> None:
-    """makes a pairwise scatter plot
+    """
+    makes a pairwise scatter plot
 
     Args:
         x (numpy vector): some vector
         y (numpy vector): some other vector
-        ax (None, optional): Description
+        ax (None, optional): where to plot?
+        color: the one color to color all points
+        label: label for all points
+        annotations: if you want annotations for each point, use this
     """
     ax = check_axis(ax)
 
@@ -72,13 +84,27 @@ def plot_pairwise(
 
     ax.set_aspect("equal", adjustable="box")
     if color is None:
-        h = plt.scatter(x, y, s=size)
-    else:
-        h = plt.scatter(x, y, color=color, s=size)
+        color = "k"
 
     # t-test
     t, p = scipy.stats.ttest_rel(x, y, nan_policy="omit")
     p = format_p_value(p)
+
+    if annotations is None:
+        h = plt.scatter(np.nan, np.nan, color=color, s=size)
+
+        for idx, annotation in enumerate(annotations):
+            ax.annotate(
+                annotation,
+                (x[idx], y[idx]),
+                horizontalalignment="center",
+                verticalalignment="center",
+                color=color,
+            )
+
+    else:
+        h = plt.scatter(x, y, color=color, s=size)
+
     if label is None:
         h.set_label(p)
     else:
