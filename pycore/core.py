@@ -4,6 +4,10 @@ but isn't in python, so acts as a shorthand for commonly used functions
 and types 
 """
 
+import hashlib
+
+import numpy as np
+
 
 def format_p_value(pvalue: float) -> str:
     """

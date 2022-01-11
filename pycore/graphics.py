@@ -90,7 +90,7 @@ def plot_pairwise(
     t, p = scipy.stats.ttest_rel(x, y, nan_policy="omit")
     p = format_p_value(p)
 
-    if annotations is None:
+    if annotations is not None:
         h = plt.scatter(np.nan, np.nan, color=color, s=size)
 
         for idx, annotation in enumerate(annotations):
@@ -100,6 +100,7 @@ def plot_pairwise(
                 horizontalalignment="center",
                 verticalalignment="center",
                 color=color,
+                fontweight="bold",
             )
 
     else:
