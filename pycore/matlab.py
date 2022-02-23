@@ -12,11 +12,49 @@ from pycore.core import (
     check_all_arrays_same_shape,
     check_first_dimension_size,
     check_type,
+    check_vector,
 )
 from pycore.graphics import check_axis
 
 
-def first_nonzero(arr, axis=0, invalid_val=-1):
+def downsample(
+    x: np.array, *, bin_size: int = 10, func=lambda x: np.nanmean(x, axis=1)
+) -> np.array:
+    """
+    fast, effective downsampler
+
+    Args:
+        x (np.array): Description
+        bin_size (int, optional): Description
+    """
+
+    check_vector(x)
+
+    # trim to closest multiple of bin size
+    z = np.floor(x.shape[0] / bin_size).astype(int) * bin_size
+    xx = x[0:z]
+    nbins = int(len(xx) / bin_size)
+
+    xx = np.reshape(xx, (nbins, bin_size))
+    tops = func(axis=1)
+    bottoms = xx.min(axis=1)
+
+
+def chunk_index(x: np.array, chunk_size: int) -> np.array:
+    """
+    returns an array the same size of x that
+    partitions it into chunks of size chunk_size
+    going from left to right along the array
+
+    Args:
+        x (np.array): Description
+        chunk_size (int): Description
+    """
+
+    return np.floor(np.arange(len(x)) / chunk_size).astype(int)
+
+
+def first_nonzero(arr: np.array, axis: int = 0, invalid_val: float = -1):
     """
     find the index of the first non-zero element in an array
 
@@ -133,7 +171,7 @@ def _methods_and_properties(thing, ignore_internal=True):
     return method_list, prop_list
 
 
-def methods(thing, spacing=None, ignore_internal=True):
+def methods(thing, spacing=None, ignore_internal: bool = True):
     """show methods of object.
 
     Args:
@@ -165,7 +203,7 @@ def methods(thing, spacing=None, ignore_internal=True):
             print(method.ljust(spacing) + " " + " getattr() failed")
 
 
-def properties(thing, ignore_internal=True, spacing=20):
+def properties(thing, ignore_internal: bool = True, spacing: int = 20):
     """show properties of object
 
     Args:
@@ -189,7 +227,7 @@ def properties(thing, ignore_internal=True, spacing=20):
             print(method.ljust(spacing) + " " + " getattr() failed")
 
 
-def imshow(X, axis=None):
+def imshow(X: np.ndarray, axis=None):
     """behaves like MATLAB's imshow, just plots the matrix given to it
 
     If no axis is specified, returns a handle to the axis. If it is,
@@ -223,7 +261,7 @@ def imshow(X, axis=None):
         return image_handle
 
 
-def Vector(N, dtype="float64", fill=None):
+def Vector(N, *, dtype="float64", fill=None):
     """makes a vector, because this is fraught with danger
 
     Args:
@@ -243,7 +281,9 @@ def Vector(N, dtype="float64", fill=None):
     return x
 
 
-def splitapply(data, groups, func=np.nanmean, flatten=False):
+def splitapply(
+    data: np.array, *, groups: np.array, func=np.nanmean, flatten: bool = False
+) -> np.array:
     """equivalent to MATLAB's splitapply
 
     Args:
@@ -252,7 +292,7 @@ def splitapply(data, groups, func=np.nanmean, flatten=False):
 
     Returns:
         result: np.ndarray the same size as unique(groups)
-        unique_values: unique values in groups
+
     """
 
     check_type(data, np.ndarray)
@@ -264,16 +304,15 @@ def splitapply(data, groups, func=np.nanmean, flatten=False):
     unique_values = np.unique(groups)
 
     if flatten or len(data.shape) == 1:
-        result = np.full_like(unique_values, np.nan)
+        result = np.full(unique_values.shape, np.nan)
     else:
-        result = np.zeros((unique_values.shape[0], data.shape[1]))
+        result = np.full((unique_values.shape[0], data.shape[1]))
 
     for i, value in enumerate(unique_values):
-        this = data[groups == value]
 
         if flatten:
             result[i] = func(data[groups == value].flatten())
         else:
             result[i] = func(data[groups == value])
 
-    return result, unique_values
+    return result

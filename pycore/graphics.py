@@ -3,12 +3,15 @@ This module contains helper graphics functions for making figures, subplots
 and modifying plots
 """
 
-from typing import Optional
+from typing import List, Optional, Tuple
 
+import bokeh
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
 import numpy as np
+import pandas as pd
 import scipy.stats
+from bokeh.plotting import figure, output_notebook
 from matplotlib import cm
 
 from pycore.core import (
@@ -19,7 +22,57 @@ from pycore.core import (
 )
 
 
-def subsample(x: np.ndarray, bin_size=50) -> np.ndarray:
+def scatter_groups(
+    data: pd.DataFrame,
+    x: str,
+    y: str,
+    group_by: str,
+    width: int = 500,
+    height: int = 500,
+):
+    """
+    creates an interactive scatter plot using bokeh
+    where clicking on legend shows/hides dots
+    for that group
+    """
+
+    output_notebook()
+
+    fig = figure(
+        width=width,
+        height=height,
+        tools=[],
+        toolbar_location=None,
+        x_axis_label=x,
+        y_axis_label=y,
+    )
+
+    groups = data[group_by].unique()
+
+    if len(groups) < 10:
+        colors = bokeh.palettes.Pastel1[9]
+    else:
+        colors = bokeh.palettes.Viridis256[256]
+
+    for i, group in enumerate(groups):
+        xx = list(data[x][data[group_by] == group])
+        yy = list(data[y][data[group_by] == group])
+        fig.circle(
+            xx,
+            yy,
+            alpha=0.5,
+            legend_label=group,
+            hover_alpha=1,
+            fill_color=colors[i],
+            line_color=colors[i],
+        )
+
+    fig.legend.click_policy = "hide"
+
+    return fig
+
+
+def subsample(x: np.ndarray, bin_size: int = 50) -> np.ndarray:
     """
     min-max resampler to make plots smaller
     and to prevent the heat death of your graphics card
@@ -29,7 +82,7 @@ def subsample(x: np.ndarray, bin_size=50) -> np.ndarray:
 
     Args:
         x: a vector
-        bin_size: max and min will be computer on this bin size (default 50)
+        bin_size: max and min will be computed on this bin size (default 50)
     """
 
     check_vector(x)
@@ -59,7 +112,8 @@ def plot_pairwise(
     annotations: Optional[list] = None,
 ) -> None:
     """
-    makes a pairwise scatter plot
+    makes a pairwise scatter plot and performs a
+    paired t-test
 
     Args:
         x (numpy vector): some vector
