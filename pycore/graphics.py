@@ -21,22 +21,26 @@ from pycore.core import (
     format_p_value,
 )
 
+output_notebook()
+
 
 def scatter_groups(
     data: pd.DataFrame,
     x: str,
     y: str,
     group_by: str,
-    width: int = 500,
-    height: int = 500,
+    width: int = 333,
+    height: int = 333,
+    size: int = 10,
+    legend_location: str = "bottom_right",
+    x_axis_type="linear",
+    y_axis_type="linear",
 ):
     """
     creates an interactive scatter plot using bokeh
     where clicking on legend shows/hides dots
     for that group
     """
-
-    output_notebook()
 
     fig = figure(
         width=width,
@@ -45,12 +49,14 @@ def scatter_groups(
         toolbar_location=None,
         x_axis_label=x,
         y_axis_label=y,
+        x_axis_type=x_axis_type,
+        y_axis_type=y_axis_type,
     )
 
     groups = data[group_by].unique()
 
-    if len(groups) < 10:
-        colors = bokeh.palettes.Pastel1[9]
+    if len(groups) < 9:
+        colors = bokeh.palettes.Colorblind[8]
     else:
         colors = bokeh.palettes.Viridis256[256]
 
@@ -65,9 +71,11 @@ def scatter_groups(
             hover_alpha=1,
             fill_color=colors[i],
             line_color=colors[i],
+            size=size,
         )
 
     fig.legend.click_policy = "hide"
+    fig.legend.location = legend_location
 
     return fig
 
