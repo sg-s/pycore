@@ -12,32 +12,8 @@ from pycore.core import (
     check_all_arrays_same_shape,
     check_first_dimension_size,
     check_type,
-    check_vector,
 )
 from pycore.graphics import check_axis
-
-
-def downsample(
-    x: np.array, *, bin_size: int = 10, func=lambda x: np.nanmean(x, axis=1)
-) -> np.array:
-    """
-    fast, effective downsampler
-
-    Args:
-        x (np.array): Description
-        bin_size (int, optional): Description
-    """
-
-    check_vector(x)
-
-    # trim to closest multiple of bin size
-    z = np.floor(x.shape[0] / bin_size).astype(int) * bin_size
-    xx = x[0:z]
-    nbins = int(len(xx) / bin_size)
-
-    xx = np.reshape(xx, (nbins, bin_size))
-    tops = func(axis=1)
-    bottoms = xx.min(axis=1)
 
 
 def chunk_index(x: np.array, chunk_size: int) -> np.array:
@@ -72,7 +48,7 @@ def first_nonzero(arr: np.array, axis: int = 0, invalid_val: float = -1):
     return np.where(mask.any(axis=axis), mask.argmax(axis=axis), invalid_val)
 
 
-def last_nonzero(arr, axis=0, invalid_val=-1):
+def last_nonzero(arr: np.array, axis=0, invalid_val: float = -1):
     """
     find the index of the last non-zero element in an array
 
@@ -123,12 +99,16 @@ def parfor(func: Callable, args, operate_on_columns: bool = True):
     if operate_on_columns:
         n_col = args[0].shape[1]
         n_args = len(args)
-        func_data = [[args[i][:, col] for i in range(n_args)] for col in range(n_col)]
+        func_data = [
+            [args[i][:, col] for i in range(n_args)] for col in range(n_col)
+        ]
 
     else:
         n_rows = args[0].shape[0]
         n_args = len(args)
-        func_data = [[args[i][row, :] for i in range(n_args)] for row in range(n_rows)]
+        func_data = [
+            [args[i][row, :] for i in range(n_args)] for row in range(n_rows)
+        ]
 
     with multiprocessing.Pool(n_procs) as p:
         result = p.starmap(func, func_data)
@@ -136,7 +116,7 @@ def parfor(func: Callable, args, operate_on_columns: bool = True):
     if operate_on_columns:
         result = np.array(result).transpose()
     else:
-        result = np.array(res)
+        result = np.array(result)
 
     return result
 
@@ -184,7 +164,9 @@ def methods(thing, spacing=None, ignore_internal: bool = True):
 
     """
 
-    method_list, _ = _methods_and_properties(thing, ignore_internal=ignore_internal)
+    method_list, _ = _methods_and_properties(
+        thing, ignore_internal=ignore_internal
+    )
 
     process_func = (lambda s: " ".join(s.split())) or (lambda s: s)
 
@@ -211,7 +193,9 @@ def properties(thing, ignore_internal: bool = True, spacing: int = 20):
         ignore_internal (True, optional): should we ignore
         attrs that start with _?
     """
-    _, prop_list = _methods_and_properties(thing, ignore_internal=ignore_internal)
+    _, prop_list = _methods_and_properties(
+        thing, ignore_internal=ignore_internal
+    )
 
     process_func = (lambda s: " ".join(s.split())) or (lambda s: s)
 
@@ -282,7 +266,7 @@ def Vector(N, *, dtype="float64", fill=None):
 
 
 def splitapply(
-    data: np.array, *, groups: np.array, func=np.nanmean, flatten: bool = False
+    data: np.array, *, groups: np.array, func=np.nanmean
 ) -> np.array:
     """equivalent to MATLAB's splitapply
 
@@ -303,16 +287,25 @@ def splitapply(
 
     unique_values = np.unique(groups)
 
-    if flatten or len(data.shape) == 1:
+    # apply the func to the first chunk of data to figure
+    # out the size of the output matrix
+    temp = func(data[groups == groups[0]])
+    temp_shape = temp.shape
+
+    if len(temp_shape) == 0:
+        # output of func is scalar
         result = np.full(unique_values.shape, np.nan)
-    else:
-        result = np.full((unique_values.shape[0], data.shape[1]))
 
-    for i, value in enumerate(unique_values):
-
-        if flatten:
-            result[i] = func(data[groups == value].flatten())
-        else:
+        for i, value in enumerate(unique_values):
             result[i] = func(data[groups == value])
+
+    elif len(temp_shape) == 1:
+        # output of func is a vector, so we should return a matrix
+        result = np.full((unique_values.shape, temp_shape[0]), np.nan)
+
+        for i, value in enumerate(unique_values):
+            result[i, :] = func(data[groups == value])
+    else:
+        raise Exception("func returns something more complex than a vector. ")
 
     return result
