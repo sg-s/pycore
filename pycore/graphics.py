@@ -11,7 +11,7 @@ import matplotlib.transforms as mtransforms
 import numpy as np
 import pandas as pd
 import scipy.stats
-from bokeh.plotting import figure, output_notebook
+from bokeh.plotting import figure
 from matplotlib import cm
 
 from pycore.core import (
@@ -20,8 +20,6 @@ from pycore.core import (
     dict_to_array,
     format_p_value,
 )
-
-output_notebook()
 
 
 def scatter_groups(
@@ -208,7 +206,9 @@ def labelled_subplots(mosaic, label=True, **optionals):
         axes: numpy array of axes
     """
     plt.close("all")
-    fig, axes = plt.subplot_mosaic(mosaic, constrained_layout=True, **optionals)
+    fig, axes = plt.subplot_mosaic(
+        mosaic, constrained_layout=True, **optionals
+    )
     if label:
         label_axes(fig, axes)
 
@@ -230,7 +230,9 @@ def label_axes(fig, axs, fontsize=15):
     """
     for label, ax in axs.items():
         # label physical distance to the left and up:
-        trans = mtransforms.ScaledTranslation(-20 / 72, 7 / 72, fig.dpi_scale_trans)
+        trans = mtransforms.ScaledTranslation(
+            -20 / 72, 7 / 72, fig.dpi_scale_trans
+        )
         ax.text(
             -0.02,
             1.0,
