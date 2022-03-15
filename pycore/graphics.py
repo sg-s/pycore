@@ -3,7 +3,7 @@ This module contains helper graphics functions for making figures, subplots
 and modifying plots
 """
 
-from typing import List, Optional, Tuple
+from typing import Optional
 
 import bokeh
 import matplotlib.pyplot as plt
@@ -13,11 +13,13 @@ import pandas as pd
 import scipy.stats
 from bokeh.plotting import figure
 from matplotlib import cm
-from pycore.core import (
+
+from pycore.core import format_p_value
+from pycore.validate import (
     check_all_arrays_same_shape,
+    check_axis,
     check_vector,
     dict_to_array,
-    format_p_value,
 )
 
 
