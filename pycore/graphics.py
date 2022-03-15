@@ -14,12 +14,11 @@ import scipy.stats
 from bokeh.plotting import figure
 from matplotlib import cm
 
-from pycore.core import format_p_value
+from pycore.core import dict_to_array, format_p_value
 from pycore.validate import (
     check_all_arrays_same_shape,
     check_axis,
     check_vector,
-    dict_to_array,
 )
 
 
