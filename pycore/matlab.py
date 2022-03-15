@@ -7,12 +7,13 @@ import multiprocessing
 from typing import Callable
 
 import numpy as np
-from pycore.core import (
+
+from pycore.validate import (
     check_all_arrays_same_shape,
+    check_axis,
     check_first_dimension_size,
     check_type,
 )
-from pycore.graphics import check_axis
 
 
 def chunk_index(x: np.array, chunk_size: int) -> np.array:
@@ -144,7 +145,7 @@ def _methods_and_properties(thing, ignore_internal=True):
                 method_list.append(str(attr_name))
             else:
                 prop_list.append(str(attr_name))
-        except:
+        except Exception:
             pass
 
     return method_list, prop_list
@@ -180,7 +181,7 @@ def methods(thing, spacing=None, ignore_internal: bool = True):
                 + " "
                 + process_func(str(getattr(thing, method).__doc__)[0:90])
             )
-        except:
+        except Exception:
             print(method.ljust(spacing) + " " + " getattr() failed")
 
 
@@ -206,7 +207,7 @@ def properties(thing, ignore_internal: bool = True, spacing: int = 20):
                 + " "
                 + process_func(str(getattr(thing, method).__doc__)[0:90])
             )
-        except:
+        except Exception:
             print(method.ljust(spacing) + " " + " getattr() failed")
 
 

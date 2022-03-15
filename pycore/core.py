@@ -91,50 +91,6 @@ def hash_dict(dictionary):
     return m.hexdigest()
 
 
-def check_all_arrays_same_shape(arrays):
-    """Checks that all arrays have the same shape
-
-    Args:
-        arrays (tuple): tuple of np.ndarrays
-
-    No Longer Returned:
-        nothing
-    """
-    for i in range(len(arrays)):
-        check_type(arrays[i], np.ndarray)
-        assert arrays[0].shape == arrays[i].shape, "All arrays should be the same size"
-
-
-def check_element_type(things, typename):
-    """checks if a numpy array has elements of a certain type
-
-    Args:
-        things (np.ndarray): array that should contain typename
-        typename (TYPE): Description
-    """
-
-    check_type(things, np.ndarray)
-    for thing in things:
-        check_type(thing, typename)
-
-
-def check_vector(thing):
-    """checks if argument is a numpy vector
-
-    Args:
-        thing (anything): any thing
-
-    No Longer Returned:
-        nothing
-    """
-
-    check_type(thing, np.ndarray)
-
-    assert (
-        len(thing.shape) == 1
-    ), "Argument is not a numpy.vector, instead, it has shape: " + str(thing.shape)
-
-
 def dict_to_array(d):
     """converts d to an np.array, ignoring keys
 
