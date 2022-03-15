@@ -7,7 +7,6 @@ import multiprocessing
 from typing import Callable
 
 import numpy as np
-
 from pycore.core import (
     check_all_arrays_same_shape,
     check_first_dimension_size,

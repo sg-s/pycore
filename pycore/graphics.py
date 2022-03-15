@@ -13,7 +13,6 @@ import pandas as pd
 import scipy.stats
 from bokeh.plotting import figure
 from matplotlib import cm
-
 from pycore.core import (
     check_all_arrays_same_shape,
     check_vector,
@@ -56,7 +55,7 @@ def scatter_groups(
     if len(groups) < 9:
         colors = bokeh.palettes.Colorblind[8]
     else:
-        colors = bokeh.palettes.Viridis256[256]
+        colors = bokeh.palettes.Viridis256[255]
 
     for i, group in enumerate(groups):
         xx = list(data[x][data[group_by] == group])
@@ -243,35 +242,3 @@ def label_axes(fig, axs, fontsize=15):
             fontfamily="sans-serif",
             fontweight="bold",
         )
-
-
-def check_axis(axis):
-
-    """
-    Utility function that generates an axis if needed, and activates it
-
-    Parameters:
-    -----------
-    axis: None or axis
-
-    Returns:
-    -----------
-    handle to an axis
-
-    """
-
-    if axis is None:
-        _, axis = plt.subplots()
-
-    if isinstance(axis, np.ndarray):
-        # probably fine, hope for the best
-        try:
-            plt.sca(axis[0])
-        except:
-            _, axis = plt.subplots()
-            plt.sca(axis)
-
-    else:
-        plt.sca(axis)
-
-    return axis
