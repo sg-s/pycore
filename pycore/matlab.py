@@ -4,6 +4,7 @@ for easier transition to python land
 """
 
 import multiprocessing
+import warnings
 from typing import Callable
 
 import numpy as np
@@ -287,25 +288,30 @@ def splitapply(
 
     unique_values = np.unique(groups)
 
-    # apply the func to the first chunk of data to figure
-    # out the size of the output matrix
-    temp = func(data[groups == groups[0]])
-    temp_shape = temp.shape
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=RuntimeWarning)
 
-    if len(temp_shape) == 0:
-        # output of func is scalar
-        result = np.full(unique_values.shape, np.nan)
+        # apply the func to the first chunk of data to figure
+        # out the size of the output matrix
+        temp = func(data[groups == groups[0]])
+        temp_shape = temp.shape
 
-        for i, value in enumerate(unique_values):
-            result[i] = func(data[groups == value])
+        if len(temp_shape) == 0:
+            # output of func is scalar
+            result = np.full(unique_values.shape, np.nan)
 
-    elif len(temp_shape) == 1:
-        # output of func is a vector, so we should return a matrix
-        result = np.full((unique_values.shape, temp_shape[0]), np.nan)
+            for i, value in enumerate(unique_values):
+                result[i] = func(data[groups == value])
 
-        for i, value in enumerate(unique_values):
-            result[i, :] = func(data[groups == value])
-    else:
-        raise Exception("func returns something more complex than a vector. ")
+        elif len(temp_shape) == 1:
+            # output of func is a vector, so we should return a matrix
+            result = np.full((unique_values.shape, temp_shape[0]), np.nan)
+
+            for i, value in enumerate(unique_values):
+                result[i, :] = func(data[groups == value])
+        else:
+            raise Exception(
+                "func returns something more complex than a vector. "
+            )
 
     return result
