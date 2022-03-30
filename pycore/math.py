@@ -5,7 +5,11 @@ contains useful maths-related functions
 
 import numpy as np
 import pandas as pd
+import scipy
 import scipy.cluster.hierarchy as sch
+from scipy import stats
+
+from pycore.matlab import chunk_index
 
 
 def cluster_corr(corr_array, inplace=False):
@@ -37,3 +41,34 @@ def cluster_corr(corr_array, inplace=False):
     if isinstance(corr_array, pd.DataFrame):
         return corr_array.iloc[idx, :].T.iloc[idx, :]
     return corr_array[idx, :][:, idx]
+
+
+def cross_correlation(x: np.array, y: np.array, *, chunk_size: int = 1000):
+    """computes the cross correlation between two arrays
+
+    a wrapper around scipy.correlate, with the following tricks:
+
+    - sane defaults
+    - auto zscoring
+    - splits signals into smaller chunks and computes in each chunk
+
+
+    """
+
+    idx = chunk_index(x, chunk_size=chunk_size)
+
+    groups = np.unique(idx)
+
+    a = stats.zscore(x[idx == groups[0]])
+    c = np.full((len(a), len(groups)), np.nan)
+
+    for i, group in enumerate(groups):
+        a = stats.zscore(x[idx == group])
+        b = stats.zscore(y[idx == group])
+
+        try:
+            c[:, i] = scipy.signal.correlate(a, b, mode="same")
+            c[:, i] /= len(a)
+        except Exception:
+            pass
+    return c
