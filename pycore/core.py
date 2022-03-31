@@ -23,7 +23,7 @@ def format_p_value(pvalue: float) -> str:
     if pvalue < 0.001:
         return "p < .001"
     else:
-        return "p = " + "{:.2f}".format(pvalue)
+        return "p = " + "{:.3f}".format(pvalue)
 
 
 def md5hash(obj):
