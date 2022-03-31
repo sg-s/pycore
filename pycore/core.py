@@ -20,8 +20,10 @@ def format_p_value(pvalue: float) -> str:
     Returns:
         str: "p = .81" or "p < .01"
     """
-    if pvalue < 0.01:
-        return "p < .01"
+    if pvalue < 0.001:
+        return "p < .001"
+    elif pvalue > 0.05:
+        return "n.s."
     else:
         return "p = " + "{:.2f}".format(pvalue)
 
