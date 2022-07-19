@@ -8,7 +8,6 @@ import warnings
 from typing import Callable
 
 import numpy as np
-
 from pycore.validate import (
     check_all_arrays_same_shape,
     check_axis,
@@ -294,6 +293,10 @@ def splitapply(
         # apply the func to the first chunk of data to figure
         # out the size of the output matrix
         temp = func(data[groups == groups[0]])
+
+        if type(temp) == float:
+            temp = np.float64(temp)
+
         temp_shape = temp.shape
 
         if len(temp_shape) == 0:

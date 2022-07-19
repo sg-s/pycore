@@ -85,6 +85,8 @@ def hash_dict(dictionary):
                 m.update(thing.encode())
         elif isinstance(temp, np.ndarray):
             m.update(temp)
+        elif isinstance(temp, str):
+            m.update(thing.encode())
         else:
             m.update(temp.to_bytes(8, "big"))
 
