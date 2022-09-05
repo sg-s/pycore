@@ -12,7 +12,8 @@ def test_hash_dict():
     data["bar"] = "wow"
     data["baz"] = np.zeros(10)
     data["list"] = ["wow", "so", "list"]
+    data["float"] = 3.14
 
     hash = hash_dict(data)
 
-    assert hash == "10f15aecea001568b0fb5fabfa14e14b", "unexpected hash"
+    assert hash == "ae03ed586028061d077ab0fbe69ef5a8", "unexpected hash"

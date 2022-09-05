@@ -78,18 +78,20 @@ def hash_dict(dictionary: dict, *, ignore_keys: Optional[list] = None) -> str:
     m = hashlib.md5()
 
     for key in keys:
-        temp = dictionary[key]
+        value = dictionary[key]
 
-        if isinstance(temp, list):
-            t = tuple(temp)
+        if isinstance(value, list):
+            t = tuple(value)
             for thing in t:
                 m.update(thing.encode())
-        elif isinstance(temp, np.ndarray):
-            m.update(temp)
-        elif isinstance(temp, str):
-            m.update(temp.encode())
+        elif isinstance(value, float):
+            m.update(str(value).encode())
+        elif isinstance(value, np.ndarray):
+            m.update(value)
+        elif isinstance(value, str):
+            m.update(value.encode())
         else:
-            m.update(temp.to_bytes(8, "big"))
+            m.update(value.to_bytes(8, "big"))
 
     return m.hexdigest()
 
