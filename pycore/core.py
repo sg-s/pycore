@@ -74,10 +74,17 @@ def hash_dict(dictionary: dict, *, ignore_keys: Optional[list] = None) -> str:
         hash: hex-encoded string
     """
     check_type(dictionary, dict)
-    keys = dictionary.keys()
+    keys = list(dictionary.keys())
     m = hashlib.md5()
 
+    # sort keys to make this reproducible
+    keys.sort()
+
     for key in keys:
+
+        if ignore_keys is not None and key in ignore_keys:
+            continue
+
         value = dictionary[key]
 
         if isinstance(value, list):
