@@ -5,6 +5,7 @@ and types
 """
 
 import hashlib
+from typing import Optional
 
 import numpy as np
 
@@ -60,7 +61,7 @@ def md5hash(obj):
     return m.hexdigest()
 
 
-def hash_dict(dictionary):
+def hash_dict(dictionary: dict, *, ignore_keys: Optional[list] = None) -> str:
     """
     hashes a dictionary, by directly hashing values
     numpy.ndarrays are converted to bytes and then hashed
@@ -86,7 +87,7 @@ def hash_dict(dictionary):
         elif isinstance(temp, np.ndarray):
             m.update(temp)
         elif isinstance(temp, str):
-            m.update(thing.encode())
+            m.update(temp.encode())
         else:
             m.update(temp.to_bytes(8, "big"))
 
