@@ -79,7 +79,7 @@ def new_functions_should_be_tested(
                     idx = new_functions.index(new_function)
                     is_tested[idx] = True
 
-    if max(is_tested):
+    if min(is_tested):
         print("All new functions have tests associated with them")
         return
 
