@@ -52,6 +52,8 @@ def new_functions_should_be_tested(
             fcn_name = line[a + 5 : z]
             if fcn_name[0] == "_":
                 continue
+            if fcn_name.find("test") >= 0:
+                continue
             new_functions.append(fcn_name)
 
     if len(new_functions) == 0:
