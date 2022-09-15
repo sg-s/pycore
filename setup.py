@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="pycore",
-    version="22.9.8",
+    version="22.9.15",
     packages=find_packages(exclude=("tests", "docs")),
     description="Useful python functions and tools",
     url="https://github.com/sg-s/pycore/",

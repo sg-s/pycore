@@ -10,6 +10,16 @@ from typing import Optional
 import numpy as np
 
 
+class struct(dict):
+    """structs are simply dictionaries that you
+    can access using dot notation
+    """
+
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
+
 def format_p_value(pvalue: float) -> str:
     """
     utility function to prettify printing of p-values

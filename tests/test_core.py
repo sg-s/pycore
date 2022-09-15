@@ -2,7 +2,18 @@
 This module tests functions in isxcore.core 
 """
 import numpy as np
-from pycore.core import hash_dict
+from pycore.core import hash_dict, struct
+
+
+def test_struct():
+    """tests the struct class"""
+    a = struct()
+    assert isinstance(a, dict), "struct is not a dictionary"
+
+    # check fast construction
+    a = struct(foo=1, bar="wow")
+    assert a.foo == 1, "Something went wrong in getting members"
+    assert a.bar == "wow", "Something went wrong in getting members"
 
 
 def test_hash_dict():
