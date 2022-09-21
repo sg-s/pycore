@@ -22,7 +22,6 @@ def make(*, text: str = "", status: str = "hidden") -> Div:
             "width": "110%",
             "height": "25px",
             "margin-bottom": "5px",
-            "visibility": "hidden",
         },
         margin=(-10, -10, 0, -10),
         sizing_mode="scale_both",
@@ -37,10 +36,13 @@ def set_message(status_bar: Div, message: str) -> None:
     </div>
     """
 
+    status_bar.visible = True
+
 
 def set_status(status_bar: Div, status: str) -> None:
     """change color and style of Div based on status"""
-    status_bar.style["visibility"] = "visible"
+
+    status_bar.visible = True
     if status == "ok":
         status_bar.style["background-color"] = "#aed581"
     elif status == "error":
@@ -49,4 +51,4 @@ def set_status(status_bar: Div, status: str) -> None:
         status_bar.style["background-color"] = "#ffca28"
         status_bar.style["color"] = "black"
     elif status == "hidden":
-        status_bar.style["visibility"] = "hidden"
+        status_bar.visible = False
