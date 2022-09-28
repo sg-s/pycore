@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="pycore",
-    version="22.9.21",
+    version='22.9.28',
     packages=find_packages(exclude=("tests", "docs")),
     description="Useful python functions and tools",
     url="https://github.com/sg-s/pycore/",
@@ -17,6 +17,7 @@ setup(
         "matplotlib>=3.4.3",
         "numpy>=1.20.3",
         "scipy>=1.7.1",
+        "bokeh",
     ],
     extras_require={
         "dev": [
