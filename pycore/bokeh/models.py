@@ -3,6 +3,9 @@ from bokeh.models import Div
 
 
 class ProgressBar(Div):
+    """a model that inherits from Div, and displays
+    a small progress bar with customizable text,
+    color, and percentage"""
 
     __implementation__ = "ProgressBar.ts"
 
@@ -16,6 +19,8 @@ class ProgressBar(Div):
     color = String(default="cornflowerblue", help="color of progressbar")
 
     def __init__(self, progress: int = 10):
+        """constructor"""
+
         super(Div, self).__init__()
         self.width = 300
         self.height = 10
