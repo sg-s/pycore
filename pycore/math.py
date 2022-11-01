@@ -54,6 +54,12 @@ def cross_correlation(x: np.array, y: np.array, *, chunk_size: int = 1000):
 
     """
 
+    if np.any(np.isnan(x)):
+        raise RuntimeError("nans in x")
+
+    if np.any(np.isnan(y)):
+        raise RuntimeError("nans in y")
+
     x = x.flatten()
     y = y.flatten()
 
@@ -67,6 +73,9 @@ def cross_correlation(x: np.array, y: np.array, *, chunk_size: int = 1000):
     for i, group in enumerate(groups):
         a = stats.zscore(x[idx == group])
         b = stats.zscore(y[idx == group])
+
+        if len(a) != c.shape[0]:
+            continue
 
         try:
             c[:, i] = scipy.signal.correlate(a, b, mode="same")
