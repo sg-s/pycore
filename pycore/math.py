@@ -7,9 +7,8 @@ import numpy as np
 import pandas as pd
 import scipy
 import scipy.cluster.hierarchy as sch
-from scipy import stats
-
 from pycore.matlab import chunk_index
+from scipy import stats
 
 
 def cluster_corr(corr_array, inplace=False):
@@ -44,7 +43,7 @@ def cluster_corr(corr_array, inplace=False):
 
 
 def cross_correlation(x: np.array, y: np.array, *, chunk_size: int = 1000):
-    """computes the cross correlation between two arrays
+    """computes the cross correlation between two vectors
 
     a wrapper around scipy.correlate, with the following tricks:
 
@@ -54,6 +53,9 @@ def cross_correlation(x: np.array, y: np.array, *, chunk_size: int = 1000):
 
 
     """
+
+    x = x.flatten()
+    y = y.flatten()
 
     idx = chunk_index(x, chunk_size=chunk_size)
 
