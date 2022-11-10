@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="pycore",
-    version="22.11.1",
+    version="22.11.10",
     packages=find_packages(exclude=("tests", "docs")),
     description="Useful python functions and tools",
     url="https://github.com/sg-s/pycore/",
@@ -24,6 +24,12 @@ setup(
             "pytest",
             "black",
             "interrogate",
+            "mkdocs-jupyter",
+            "mkdocs-material==8.3.6",
+            "mkdocs-material-extensions==1.0.3",
+            "mkdocs==1.3.0",
+            "mkautodoc",
+            "jupyter_contrib_nbextensions",
         ]
     },
 )

@@ -3,7 +3,7 @@ line-length = 79
 
 [tool.interrogate]
 fail-under = 100
-exclude = ["setup.py", "docs", "build","isxtools/caiman.py","tests"]
+exclude = ["setup.py", "docs", "build","tests"]
 ignore-init-method = true
 ignore-init-module = true
 ignore-magic = true
@@ -16,3 +16,5 @@ ignore-nested-classes = true
 ignore-setters = false
 ignore-regex = ["^get$", "^mock_.*", ".*BaseClass.*"]
 color = true
+
+

@@ -1,0 +1,66 @@
+site_name: pycore
+repo_url: https://github.com/sg-s/pycore/
+site_author: Srinivas Gorur-Shandilya
+
+
+
+docs_dir: 'docs'
+theme:
+  icon:
+    logo: material/star-circle
+  name: material 
+  palette:
+    primary: '#87C440'
+    accent: '#3D97CD'
+  features:
+    - navigation.tracking
+    - navigation.tabs
+    - toc.follow
+    - navigation.top
+
+
+nav:
+  - Home:  README.md
+  - How tos:
+    - Visualization of neural data: how-to/editable-mpl-figures.ipynb
+
+
+ 
+
+
+extra_css:
+  - extras/extra.css
+
+
+use_directory_urls: false
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - codehilite
+  - mkautodoc
+  - pymdownx.details
+  - pymdownx.superfences
+
+
+extra:
+  homepage: https://srinivas.gs
+  generator: false
+  social:
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:<code@srinivas.gs>
+      name: Srinivas Gorur-Shandilya
+    - icon: fontawesome/brands/github
+      link: https://github.com/sg-s/
+
+
+plugins:
+  - mkdocs-jupyter
+  - search
+
+# Required to load the MathJax javascript for the mdx_math.py
+extra_javascript: 
+  - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML'
+  - extras/extra.js
+  - extras/extra.css
