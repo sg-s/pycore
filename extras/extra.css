@@ -1,0 +1,81 @@
+
+/*this hides the cell #*/
+.jp-CodeCell > .jp-Cell-inputWrapper {
+    direction: rtl;
+    width:100%;
+
+}
+
+.jp-InputArea-prompt {
+    visibility: hidden;
+} 
+
+.jp-OutputArea-prompt {
+    visibility: hidden;  
+    position:absolute;
+    right: 0;
+    
+}
+
+.jp-CodeCell > .jp-Cell-outputWrapper {
+    margin-top: -10px;
+    padding-top:0;
+    display: table-cell;
+    text-align: left;
+}
+.jp-Cell-outputWrapper > .jp-Cell-outputCollapser {
+
+    margin-top: -17px;
+}
+
+
+/* Jupyter code block expand and collapse*/
+.expandClass {
+    border: 1px solid #7D838A;
+    color: #7D838A;
+    border-radius: 3px;
+    padding-left:2px;
+    padding-right:2px;
+    margin-right:3px;
+    }
+.active, .expandClass:hover{
+    background: #7D838A;
+    color:white;
+}
+.jupyter-wrapper  .highlight-ipynb {
+    display:none;
+}
+.zeroclipboard-container {
+    position: relative !important;
+    float:right;
+}
+
+
+
+.jupyter-wrapper table.dataframe tr, .jupyter-wrapper table.dataframe th, .jupyter-wrapper table.dataframe td {
+    text-align:left;
+}
+
+.jupyter-wrapper table.dataframe {
+    table-layout: auto;
+    width:  auto;
+}
+
+
+
+/*full width graphics*/
+@media only screen and (min-width: 76.25em) {
+  .md-main__inner {
+    max-width: initial;
+  }
+  .md-sidebar--primary {
+    left: 0;
+  }
+  .md-sidebar--secondary {
+    right: 0;
+    margin-left: 10;
+    padding-left: 50px;
+    -webkit-transform: none;
+    transform: none;   
+  }
+}
