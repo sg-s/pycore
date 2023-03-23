@@ -23,6 +23,7 @@ class struct(dict):
     __delattr__ = dict.__delitem__
 
 
+@beartype
 def format_p_value(pvalue: float) -> str:
     """
     utility function to prettify printing of p-values
@@ -87,7 +88,11 @@ def md5hash(obj) -> str:
     return m.hexdigest()
 
 
-def hash_dict(dictionary: dict, *, ignore_keys: Optional[list] = None) -> str:
+def hash_dict(
+    dictionary: dict,
+    *,
+    ignore_keys: Optional[list] = None,
+) -> str:
     """
     hashes a dictionary, by directly hashing values
     numpy.ndarrays are converted to bytes and then hashed

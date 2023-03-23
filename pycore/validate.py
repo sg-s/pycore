@@ -5,8 +5,11 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+from beartype import beartype
 
-def ext_is(txt: str, ext: str):
+
+@beartype
+def ext_is(txt: str, ext: str) -> None:
     """input should have an extention that is of a certain type"""
     this_ext = os.path.splitext(txt)[1]
     assert (

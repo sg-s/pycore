@@ -3,8 +3,11 @@
 import math
 import os
 
+from beartype import beartype
 
-def largest(files: list):
+
+@beartype
+def largest(files: list) -> str:
     """
     returns largest file in a list of files
 
@@ -18,6 +21,7 @@ def largest(files: list):
     return files[sizes.index(max(sizes))]
 
 
+@beartype
 def smallest(files: list) -> str:
     """
     returns smallest file in a list of files
@@ -32,6 +36,7 @@ def smallest(files: list) -> str:
     return files[sizes.index(min(sizes))]
 
 
+@beartype
 def get_folder_size(start_path: str = ".") -> int:
     """get total size of folder, including all sub directories"""
     total_size = 0
@@ -46,6 +51,7 @@ def get_folder_size(start_path: str = ".") -> int:
     return total_size
 
 
+@beartype
 def format_bytes(size_bytes: int) -> str:
     """converts bytes into MB, GB, etc. for a humans
 

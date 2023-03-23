@@ -43,7 +43,12 @@ def cluster_corr(corr_array, inplace=False):
     return corr_array[idx, :][:, idx]
 
 
-def cross_correlation(x: np.array, y: np.array, *, chunk_size: int = 1000):
+def cross_correlation(
+    x: np.array,
+    y: np.array,
+    *,
+    chunk_size: int = 1000,
+):
     """computes the cross correlation between two vectors
 
     a wrapper around scipy.correlate, with the following tricks:
