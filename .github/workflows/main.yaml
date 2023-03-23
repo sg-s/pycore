@@ -62,6 +62,6 @@ jobs:
 
       - name: run unit tests
         run: |
-          poetry install --with test
+          poetry install --with test --without dev
           make test
 
