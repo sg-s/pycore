@@ -24,7 +24,7 @@ def offer_editable_mpl_figure(func):
         fig = func(*args, **kwargs)
         _save_figure(
             fig=fig,
-            file_name=f"{str(func)}_{arghash}",
+            file_name=f"{func.__name__}_{arghash}",
             save_folder=".",
             formats=[".pdf"],
         )
