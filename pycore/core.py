@@ -56,6 +56,7 @@ def md5hash(obj) -> str:
     - np.array
     - str
     - pd.DataFrame
+    - tuple
 
     """
 
@@ -70,7 +71,7 @@ def md5hash(obj) -> str:
         # how-to-use-hashlib-to-md5-hash-a-number
         # so we're going to use a dirty hack to cast into a string
         m.update(str(obj).encode())
-    elif isinstance(obj, list):
+    elif isinstance(obj, list) or isinstance(obj, tuple):
         t = tuple(obj)
         list_m = ""
         for thing in t:

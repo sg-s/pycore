@@ -45,6 +45,10 @@ def test_md5hash():
         md5hash(np.zeros(10)) == "bbf7c6077962a7c28114dbd10be947cd"
     ), "Failure in hashing a numpy array"
 
+    assert (
+        md5hash((1, 2, "a")) == "8de6e804d698fc88d230c169a509cc20"
+    ), "Failure in hashing a tuple"
+
 
 def test_struct():
     """tests the struct class"""
