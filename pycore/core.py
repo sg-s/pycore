@@ -8,6 +8,9 @@ import hashlib
 from typing import Optional
 
 import numpy as np
+import pandas as pd
+
+from beartype import beartype
 
 
 class struct(dict):
@@ -37,12 +40,22 @@ def format_p_value(pvalue: float) -> str:
         return "p = " + "{:.3f}".format(pvalue)
 
 
-def md5hash(obj):
+@beartype
+def md5hash(obj) -> str:
     """
     hash almost anything
 
-    Args:
-        thing (TYPE): Description
+    this function returns a deterministic (non cryptographic)
+    hash of a wide variety of python objects
+
+    Objects supported are:
+
+    - float
+    - list
+    - np.array
+    - str
+    - pd.DataFrame
+
     """
 
     m = hashlib.md5()
@@ -66,6 +79,9 @@ def md5hash(obj):
         m.update(np.ascontiguousarray(obj))
     elif isinstance(obj, str):
         m.update(obj.encode())
+    elif isinstance(obj, pd.DataFrame):
+        pd_hash = md5hash(list(pd.util.hash_pandas_object(obj)))
+        m.update(pd_hash.encode())
     else:
         m.update(obj.to_bytes(8, "big"))
     return m.hexdigest()
