@@ -30,7 +30,9 @@ def offer_editable_mpl_figure(func):
         )
 
         display(
-            Markdown(f"[↓ ᴇᴅɪᴛᴀʙʟᴇ ꜰɪɢᴜʀᴇ ({arghash[0:7]})]({arghash}.pdf)")
+            Markdown(
+                f"[↓ ᴇᴅɪᴛᴀʙʟᴇ ꜰɪɢᴜʀᴇ ({arghash[0:7]})]({func.__name__}_{arghash}.pdf)"
+            )
         )
 
     return _wrapper
