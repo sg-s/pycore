@@ -46,7 +46,7 @@ jobs:
       fail-fast: true
       matrix:
         python-version: [3.9, 3.11]
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v3

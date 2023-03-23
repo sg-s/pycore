@@ -20,7 +20,7 @@ color = true
 
 [tool.poetry]
 name = "pycore"
-version = "0.1.0"
+version = "23.3.23"
 description = "useful functions in python"
 authors = ["Srinivas Gorur-Shandilya <code@srinivas.gs>"]
 license = "GPL"
