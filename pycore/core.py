@@ -118,7 +118,7 @@ def hash_dict(
 
         value = dictionary[key]
 
-        if isinstance(value, list):
+        if isinstance(value, list) or isinstance(value, tuple):
             t = tuple(value)
             for thing in t:
                 m.update(thing.encode())
