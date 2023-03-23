@@ -91,7 +91,6 @@ def hash_dict(dictionary: dict, *, ignore_keys: Optional[list] = None) -> str:
     keys.sort()
 
     for key in keys:
-
         if ignore_keys is not None and key in ignore_keys:
             continue
 

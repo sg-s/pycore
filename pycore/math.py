@@ -7,8 +7,9 @@ import numpy as np
 import pandas as pd
 import scipy
 import scipy.cluster.hierarchy as sch
-from pycore.matlab import chunk_index
 from scipy import stats
+
+from pycore.matlab import chunk_index
 
 
 def cluster_corr(corr_array, inplace=False):

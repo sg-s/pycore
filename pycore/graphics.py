@@ -2,19 +2,18 @@
 This module contains helper graphics functions for making figures, subplots
 and modifying plots
 """
-import os
+
 from typing import Optional
 
 import bokeh
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
 import numpy as np
 import pandas as pd
 import scipy.stats
 from bokeh.plotting import figure
-from IPython.display import Markdown, display
 from matplotlib import cm
+
 from pycore.core import dict_to_array, format_p_value
 from pycore.validate import (
     check_all_arrays_same_shape,

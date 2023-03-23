@@ -8,6 +8,7 @@ import warnings
 from typing import Callable
 
 import numpy as np
+
 from pycore.validate import (
     check_all_arrays_same_shape,
     check_axis,
@@ -136,7 +137,6 @@ def _methods_and_properties(thing, ignore_internal=True):
     method_list = []
     prop_list = []
     for attr_name in dir(thing):
-
         if attr_name.startswith("_") and ignore_internal:
             continue
 
@@ -174,7 +174,6 @@ def methods(thing, spacing=None, ignore_internal: bool = True):
         spacing = 3 + max([len(method) for method in method_list])
 
     for method in method_list:
-
         try:
             print(
                 str(method.ljust(spacing))
@@ -200,7 +199,6 @@ def properties(thing, ignore_internal: bool = True, spacing: int = 20):
     process_func = (lambda s: " ".join(s.split())) or (lambda s: s)
 
     for method in prop_list:
-
         try:
             print(
                 str(method.ljust(spacing))

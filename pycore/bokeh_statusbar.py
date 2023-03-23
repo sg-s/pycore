@@ -8,6 +8,7 @@ https://discourse.bokeh.org/t/error-when-trying-to-subclass-bokeh-models-div/958
 
 """
 
+
 from bokeh.models import Div
 
 

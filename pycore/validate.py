@@ -39,7 +39,6 @@ def check_first_dimension_size(things):
 
 
 def check_axis(axis):
-
     """
     Utility function that generates an axis if needed, and activates it
 

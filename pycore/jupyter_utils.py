@@ -3,6 +3,7 @@ import os
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from IPython.display import Markdown, display
+
 from pycore.core import hash_dict, md5hash
 
 
@@ -12,7 +13,6 @@ def offer_editable_mpl_figure(func):
     """
 
     def _wrapper(*args, **kwargs):
-
         hashes = []
         for arg in args:
             hashes.append(md5hash(arg))
