@@ -63,7 +63,7 @@ def md5hash(obj):
             list_m += md5hash(thing)
         m.update(list_m.encode())
     elif isinstance(obj, np.ndarray):
-        m.update(obj)
+        m.update(np.ascontiguousarray(obj))
     elif isinstance(obj, str):
         m.update(obj.encode())
     else:
