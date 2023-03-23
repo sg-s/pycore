@@ -4,10 +4,7 @@ import os
 import subprocess
 from glob import glob
 
-from beartype import beartype
 
-
-@beartype
 def new_functions_should_be_tested(
     repo_dir: str,
     test_dir_name: str = "tests",
