@@ -89,6 +89,7 @@ def md5hash(obj) -> str:
     return m.hexdigest()
 
 
+@beartype
 def hash_dict(
     dictionary: dict,
     *,
@@ -105,9 +106,9 @@ def hash_dict(
     Returns:
         hash: hex-encoded string
     """
-    check_type(dictionary, dict)
+
     keys = list(dictionary.keys())
-    m = hashlib.md5()
+    hashes = []
 
     # sort keys to make this reproducible
     keys.sort()
@@ -118,20 +119,9 @@ def hash_dict(
 
         value = dictionary[key]
 
-        if isinstance(value, list) or isinstance(value, tuple):
-            t = tuple(value)
-            for thing in t:
-                m.update(thing.encode())
-        elif isinstance(value, float):
-            m.update(str(value).encode())
-        elif isinstance(value, np.ndarray):
-            m.update(value)
-        elif isinstance(value, str):
-            m.update(value.encode())
-        else:
-            m.update(value.to_bytes(8, "big"))
+        hashes.append(md5hash(value))
 
-    return m.hexdigest()
+    return md5hash(hashes)
 
 
 def dict_to_array(d):

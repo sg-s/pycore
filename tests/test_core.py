@@ -63,6 +63,7 @@ def test_struct():
 
 def test_hash_dict():
     """tests hash dict"""
+
     data = {}
     data["foo"] = 10
     data["bar"] = "wow"
@@ -70,9 +71,11 @@ def test_hash_dict():
     data["list"] = ["wow", "so", "list"]
     data["float"] = 3.14
 
+    correct_hash = "ab57ae69616db0669f32dd8ad9c3d9f8"
+
     hash = hash_dict(data)
 
-    assert hash == "bbba5ab5117f57bf9c186955806e4556", "unexpected hash"
+    assert hash == correct_hash, "unexpected hash"
 
     # now the same thing, but keys in a different order
 
@@ -85,7 +88,7 @@ def test_hash_dict():
 
     hash = hash_dict(data)
 
-    assert hash == "bbba5ab5117f57bf9c186955806e4556", "unexpected hash"
+    assert hash == correct_hash, "unexpected hash when reordering dictionary"
 
     # now add a key and ignore it
     data["ignored1"] = "wow"
@@ -93,4 +96,4 @@ def test_hash_dict():
 
     hash = hash_dict(data, ignore_keys=["ignored1", "ignored2"])
 
-    assert hash == "bbba5ab5117f57bf9c186955806e4556", "unexpected hash"
+    assert hash == correct_hash, "unexpected hash with ignored keys"
