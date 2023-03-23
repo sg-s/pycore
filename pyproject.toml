@@ -18,3 +18,24 @@ ignore-regex = ["^get$", "^mock_.*", ".*BaseClass.*"]
 color = true
 
 
+[tool.poetry]
+name = "pycore"
+version = "0.1.0"
+description = "useful functions in python"
+authors = ["Srinivas Gorur-Shandilya <code@srinivas.gs>"]
+license = "GPL"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.24.2"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.0"
+interrogate = "^1.5.0"
+coverage = "^7.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
