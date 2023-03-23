@@ -22,17 +22,18 @@ def offer_editable_mpl_figure(func):
         arghash = md5hash(hashes)
 
         fig = func(*args, **kwargs)
+
+        file_name = f"{func.__name__}_{arghash}"
+
         _save_figure(
             fig=fig,
-            file_name=f"{func.__name__}_{arghash}",
+            file_name=file_name,
             save_folder=".",
             formats=[".pdf"],
         )
 
         display(
-            Markdown(
-                f"[↓ ᴇᴅɪᴛᴀʙʟᴇ ꜰɪɢᴜʀᴇ ({arghash[0:7]})]({func.__name__}_{arghash}.pdf)"
-            )
+            Markdown(f"[↓ ᴇᴅɪᴛᴀʙʟᴇ ꜰɪɢᴜʀᴇ ({arghash[0:7]})]({file_name}.pdf)")
         )
 
     return _wrapper
