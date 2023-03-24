@@ -31,6 +31,7 @@ python = "^3.9"
 numpy = "^1.24.2"
 pandas = "^1.5.3"
 beartype = "^0.12.0"
+pygithub = "^1.58.1"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.2.0"

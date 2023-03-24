@@ -1,12 +1,77 @@
 """software development best practices"""
 
+import ast
 import os
 import subprocess
 from glob import glob
+from pathlib import Path, PosixPath
+from typing import List, Union
+
+from beartype import beartype
 
 
+def find_all_functions_in_dir(dir_name: str) -> List:
+    # find all .py files
+
+    py_files = []
+    for path in Path(dir_name).rglob("*.py"):
+        py_files.append(path.absolute())
+
+    # find all functions in all files
+    all_functions = []
+    for file in py_files:
+        all_functions.extend(get_functions_in_module(file))
+
+    # ignore functions that begin with _
+    all_functions = [func for func in all_functions if func[0] != "_"]
+
+    return all_functions
+
+
+def find_untested_functions(dir_name: str) -> List:
+    """find all functions that are missing tests in some
+    directory
+
+
+    """
+    all_functions = find_all_functions_in_dir(dir_name)
+
+    # make a list of test functions
+    existing_tests = [
+        func for func in all_functions if func.startswith("test")
+    ]
+
+    # make a list of true functions (that need tests)
+    expected_tests = [
+        "test_" + func for func in all_functions if not func.startswith("test")
+    ]
+
+    # find missing tests
+    missing_tests = list(set(expected_tests).difference(set(existing_tests)))
+
+    untested_functions = [func[5:] for func in missing_tests]
+
+    return untested_functions
+
+
+@beartype
+def get_functions_in_module(module_loc: Union[str, PosixPath]) -> List:
+    """returns a list of functions in some module
+
+    You need to specify the location of the module on disk
+    """
+    source = open(module_loc).read()
+    functions = [
+        f.name
+        for f in ast.parse(source).body
+        if isinstance(f, ast.FunctionDef)
+    ]
+    return functions
+
+
+@beartype
 def new_functions_should_be_tested(
-    repo_dir: str,
+    repo_dir: Union[str, PosixPath],
     test_dir_name: str = "tests",
 ) -> None:
     """This function checks that all new functions have
