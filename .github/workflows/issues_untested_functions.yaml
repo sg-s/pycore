@@ -8,12 +8,7 @@ on:
 jobs:
 
 
-
-
-
-
-
-  code_format:
+  update_issues_for_untested_functions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
