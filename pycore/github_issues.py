@@ -1,5 +1,3 @@
-import os
-
 from github import Github, GithubException
 from pycore.dev import find_all_functions_in_dir, find_untested_functions
 
