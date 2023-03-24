@@ -1,0 +1,38 @@
+name: issue-bot
+
+on:
+  push:
+    branches: [ main ]
+
+
+jobs:
+
+
+
+
+
+
+
+  code_format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9.15
+
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.3.1
+
+      - name: sync issues for testing
+        env: 
+          TOKEN: ${{ secrets.TOKEN}}
+        run: |
+          echo $TOKEN > github_token
+          echo "sg-s/pycore" > repo_name
+          poetry install --with test --without dev
+          poetry run python tests/sync_issues.py
+
