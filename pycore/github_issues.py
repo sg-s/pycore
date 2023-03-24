@@ -67,7 +67,7 @@ def close_issues_for_tested_functions(
         if underlying_func in untested_functions:
             continue
 
-        print(f"Closing issue for testing {func}")
+        print(f"Closing issue for testing {underlying_func}")
 
         # add a comment saying we're closing this
         if underlying_func in all_functions:
